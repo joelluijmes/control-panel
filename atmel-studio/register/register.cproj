@@ -25,7 +25,21 @@
     <preserveEEPROM>true</preserveEEPROM>
     <OverrideVtorValue>exception_table</OverrideVtorValue>
     <BootSegment>2</BootSegment>
-    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <eraseonlaunchrule>1</eraseonlaunchrule>
+    <avrtool>com.atmel.avrdbg.tool.atmelice</avrtool>
+    <avrtoolserialnumber>J41800037515</avrtoolserialnumber>
+    <avrdeviceexpectedsignature>0x1E9311</avrdeviceexpectedsignature>
+    <com_atmel_avrdbg_tool_atmelice>
+      <ToolOptions>
+        <InterfaceProperties>
+        </InterfaceProperties>
+        <InterfaceName>debugWIRE</InterfaceName>
+      </ToolOptions>
+      <ToolType>com.atmel.avrdbg.tool.atmelice</ToolType>
+      <ToolNumber>J41800037515</ToolNumber>
+      <ToolName>Atmel-ICE</ToolName>
+    </com_atmel_avrdbg_tool_atmelice>
+    <avrtoolinterface>debugWIRE</avrtoolinterface>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -79,6 +93,7 @@
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
       <Value>DEBUG</Value>
+      <Value>F_CPU=8000000</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
   <avrgcc.compiler.directories.IncludePaths>
@@ -115,58 +130,76 @@
       <SubType>compile</SubType>
       <Link>display.h</Link>
     </Compile>
-    <Compile Include="..\..\src\interface\register\io.h">
+    <Compile Include="..\..\src\interface\register\config.h">
       <SubType>compile</SubType>
-      <Link>io.h</Link>
+      <Link>config.h</Link>
     </Compile>
     <Compile Include="..\..\src\interface\register\main.c">
       <SubType>compile</SubType>
       <Link>main.c</Link>
     </Compile>
-    <Compile Include="..\..\src\lib\max7221\max7221.c">
-      <Link>max7221.c</Link>
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="..\..\src\lib\max7221\max7221.h">
-      <Link>max7221.h</Link>
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="..\..\src\lib\mux4067\mux4067.c">
-      <Link>mux4067.c</Link>
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="..\..\src\lib\mux4067\mux4067.h">
-      <Link>mux4067.h</Link>
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="..\..\src\lib\spi\double\spi_double.c">
-      <Link>double\spi_double.c</Link>
+      <Link>lib\spi\double\spi_double.c</Link>
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="..\..\src\lib\spi\double\spi_double.h">
-      <Link>double\spi_double.h</Link>
+      <Link>lib\spi\double\spi_double.h</Link>
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="..\..\src\lib\spi\single\spi_single.c">
-      <Link>single\spi_single.c</Link>
+      <Link>lib\spi\single\spi_single.c</Link>
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="..\..\src\lib\spi\single\spi_single.h">
-      <Link>single\spi_single.h</Link>
+      <Link>lib\spi\single\spi_single.h</Link>
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="..\..\src\lib\spi\spi.c">
-      <Link>spi.c</Link>
+      <Link>lib\spi\spi.c</Link>
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="..\..\src\lib\spi\spi.h">
-      <Link>spi.h</Link>
+      <Link>lib\spi\spi.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\mux4067\mux4067.c">
+      <Link>lib\mux4067\mux4067.c</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\mux4067\mux4067.h">
+      <Link>lib\mux4067\mux4067.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\max7221\max7221.c">
+      <Link>lib\max7221\max7221.c</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\max7221\max7221.h">
+      <Link>lib\max7221\max7221.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\models\register.h">
+      <Link>models\register.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\protos\protos.c">
+      <Link>lib\protos\protos</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\protos\protos.h">
+      <Link>lib\protos\protos</Link>
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="double\" />
-    <Folder Include="single\" />
+    <Folder Include="models\" />
+    <Folder Include="lib\" />
+    <Folder Include="lib\max7221\" />
+    <Folder Include="lib\mux4067\" />
+    <Folder Include="lib\spi\" />
+    <Folder Include="lib\spi\double\" />
+    <Folder Include="lib\spi\single\" />
+    <Folder Include="lib\protos" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

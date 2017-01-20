@@ -1,6 +1,5 @@
 #include "max7221.h"
 #include <util/delay.h>
-
 #define DATA_ASSERT()   (MAX7221_DATA_PORT  |= MAX7221_DATA_MASK)
 #define DATA_DISABLE()  (MAX7221_DATA_PORT  &= ~MAX7221_DATA_MASK)
 #define CS_ASSERT()     (MAX7221_CS_PORT    &= ~MAX7221_CS_MASK)
@@ -74,11 +73,11 @@ static void spi_write(const uint8_t* const arr, uint8_t len)
             else
                 DATA_DISABLE();
 
-            _delay_us(100);
+            _delay_us(5);
             SCK_ASSERT();
-            _delay_us(100);
+            _delay_us(5);
             SCK_DISABLE();
-            _delay_us(100);
+            _delay_us(5);
         }
     }
 

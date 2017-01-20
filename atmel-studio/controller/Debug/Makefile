@@ -38,7 +38,8 @@ SUBDIRS :=  \
 ../lib/spi/ \
 ../lib/spi/double/ \
 ../lib/spi/single/ \
-../lib/protos
+../lib/protos \
+../lib/mcp23s17
 
 
 # Add inputs and outputs from these tool invocations to the build variables 
@@ -47,7 +48,8 @@ C_SRCS +=  \
 ../../../src/lib/spi/double/spi_double.c \
 ../../../src/lib/spi/single/spi_single.c \
 ../../../src/lib/spi/spi.c \
-../../../src/lib/protos/protos.c
+../../../src/lib/protos/protos.c \
+../../../src/lib/mcp23s17/mcp23s17.c
 
 
 PREPROCESSING_SRCS += 
@@ -61,28 +63,32 @@ main.o \
 lib/spi/double/spi_double.o \
 lib/spi/single/spi_single.o \
 lib/spi/spi.o \
-lib/protos/protos.o
+lib/protos/protos.o \
+lib/mcp23s17/mcp23s17.o
 
 OBJS_AS_ARGS +=  \
 main.o \
 lib/spi/double/spi_double.o \
 lib/spi/single/spi_single.o \
 lib/spi/spi.o \
-lib/protos/protos.o
+lib/protos/protos.o \
+lib/mcp23s17/mcp23s17.o
 
 C_DEPS +=  \
 main.d \
 lib/spi/double/spi_double.d \
 lib/spi/single/spi_single.d \
 lib/spi/spi.d \
-lib/protos/protos.d
+lib/protos/protos.d \
+lib/mcp23s17/mcp23s17.d
 
 C_DEPS_AS_ARGS +=  \
 main.d \
 lib/spi/double/spi_double.d \
 lib/spi/single/spi_single.d \
 lib/spi/spi.d \
-lib/protos/protos.d
+lib/protos/protos.d \
+lib/mcp23s17/mcp23s17.d
 
 OUTPUT_FILE_PATH +=controller.elf
 
@@ -98,6 +104,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 
@@ -138,6 +146,13 @@ lib/spi/%.o: ../../../src/lib/spi/%.c
 	
 
 lib/protos/%.o: ../../../src/lib/protos/%.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 4.9.2
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.106\include" -I"../../../src/controller"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328pb -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.106\gcc\dev\atmega328pb" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+lib/mcp23s17/%.o: ../../../src/lib/mcp23s17/%.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 4.9.2
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG -DF_CPU=16000000  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.106\include" -I"../../../src/controller"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega328pb -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.0.106\gcc\dev\atmega328pb" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

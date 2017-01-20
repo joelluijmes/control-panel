@@ -34,27 +34,28 @@
 #define DDR_MISO		    DDRB
 #define MASK_MISO		    (1 << 4)
 
+#define PIN_SS		        PINB
 #define PORT_SS		        PORTB
 #define DDR_SS		        DDRB
 #define MASK_SS		        (1 << 2)
 
 #define ROT1_DDR    DDRB
 #define ROT1_PIN    PINB
+#define ROT1_PORT   PORTB
 #define ROT1_MASK   (1 << 6)
 
 #define ROT2_DDR    DDRD
 #define ROT2_PIN    PIND
+#define ROT2_PORT   PORTD
 #define ROT2_MASK   (1 << 5)
 
 #define ROT4_DDR    DDRB
 #define ROT4_PIN    PINB
+#define ROT4_PORT   PORTB
 #define ROT4_MASK   (1 << 7)
 
 #define ROT8_DDR    DDRD
 #define ROT8_PIN    PIND
+#define ROT8_PORT   PORTD
 #define ROT8_MASK   (1 << 6)
 
-#define ROT1_SAMPLE() ((!!(ROT1_PIN & ROT1_MASK)) << 0)
-#define ROT2_SAMPLE() ((!!(ROT2_PIN & ROT2_MASK)) << 1)
-#define ROT4_SAMPLE() ((!!(ROT4_PIN & ROT4_MASK)) << 2)
-#define ROT8_SAMPLE() ((!!(ROT8_PIN & ROT8_MASK)) << 3)

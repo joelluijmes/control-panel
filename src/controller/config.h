@@ -51,3 +51,12 @@
 #define DDR_SS_FRONT_1	DDRE
 #define MASK_SS_FRONT_1	(1 << 2)
 // End SPI Devices
+
+
+#define MCP23_SS12_PORT	PORTB
+#define MCP23_SS12_DDR	DDRB
+#define MCP23_SS12_MASK	(1 << 0 | 1 << 2)
+
+#define MCP23_SS3_PORT	PORTC
+#define MCP23_SS3_DDR	DDRC
+#define MCP23_SS3_MASK	(1 << 4)

@@ -40,6 +40,7 @@ typedef struct status_display_t
 
 typedef struct status_state_t
 {
-    uint8_t step : 1;
     clock_t clock;
+    uint8_t step : 1;
+    uint8_t selected : 4;
 } status_state_t;

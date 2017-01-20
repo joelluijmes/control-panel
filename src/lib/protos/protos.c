@@ -1,69 +1,70 @@
 #include "protos.h"
 
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <util/crc16.h>
 
 #define PROTO_HEADER sizeof(uint8_t)*2
 
 static uint16_t calculate_crc(const proto_packet_t* packet);
-static void completed(const uint8_t* buf, uint8_t len);
-
-typedef enum status_t 
-{
-    HEADER,
-    PAYLOAD,
-    FOOTER
-} status_t;
 
 typedef struct state_t 
 {
-    volatile status_t status : 2;
-    volatile uint8_t running : 1;
+    proto_status_t status : 3;
 
-    volatile proto_packet_t* transmit;
-    volatile proto_packet_t* receive;
+    uint8_t buf[PROTO_HEADER];
 
+    const proto_packet_t* transmit;
+    proto_packet_t* receive;
 
     tranceive_t tranceive;
+    completed_t* on_completed;
 } state_t;
 
 state_t state;
 
-void proto_init(completed_t* pcompleted, tranceive_t tranceive)
+void proto_init(tranceive_t tranceive, completed_t* on_completed)
 {
-    *pcompleted = completed;
     state.tranceive = tranceive;
+    state.on_completed = on_completed;
 }
 
-void proto_wait(void)
+void proto_reset(void)
 {
-    while (state.running) ;
+    state.status = IDLE;
+    state.transmit = 0;
+    state.receive = 0;
+}
+
+int8_t proto_completed()
+{
+    return state.status == IDLE;
+}
+
+proto_status_t proto_status()
+{
+    return state.status;
 }
 
 proto_packet_t proto_create(uint8_t id, const uint8_t* payload, uint8_t len)
 {
-    proto_packet_t packet =
-    {
-        .id = id,
-        .len = len,
-        .payload = payload
-    };
-
+    proto_packet_t packet = proto_create_empty(payload, len);
+    packet.id = id;
     packet.crc = calculate_crc(&packet);
+
     return packet;
 }
 
-void proto_tranceive(const proto_packet_t* transmit, proto_packet_t* receive)
+proto_packet_t proto_create_empty(const uint8_t* payload, uint8_t len)
 {
-    if (state.running)
-        return;
+    proto_packet_t packet =
+    {
+        .len = len,
+        .payload = (uint8_t*)payload
+    };
 
-    // start by transmitting the header
-    state.status = HEADER;
-    state.running = 1;
-    state.transmit = transmit;
-    state.receive = receive;
-
-    state.tranceive((uint8_t*)&state.transmit->id, PROTO_HEADER, (uint8_t*)state.receive, PROTO_HEADER);    
+    return packet;
 }
 
 static uint16_t calculate_crc(const proto_packet_t* packet)
@@ -78,44 +79,64 @@ static uint16_t calculate_crc(const proto_packet_t* packet)
     return crc;
 }
 
-static void handle_header(const uint8_t* buf, uint8_t len)
+static void completed()
 {
-    volatile uint8_t packet_id = buf[0];
-    volatile uint8_t packet_len = buf[1];
-    
-    state.tranceive(state.transmit->payload, state.transmit->len, state.receive->payload, state.receive->len);
-    
-    state.status = PAYLOAD;
-}
+    const proto_packet_t* transmit = state.transmit;
+    proto_packet_t* receive = state.receive;
+    uint8_t* buf = state.buf;
 
-static void handle_payload(const uint8_t* buf, uint8_t len)
-{
-    state.tranceive((uint8_t*)&state.transmit->crc, sizeof(uint16_t), (uint8_t*)&state.receive->crc, sizeof(uint16_t));
-    state.status = FOOTER;
-}
-
-static void handle_footer(const uint8_t* buf, uint8_t len)
-{
-    state.running = 0;
-}
-
-static void completed(const uint8_t* buf, uint8_t len)
-{
     switch (state.status)
     {
         case HEADER:
-            handle_header(buf, len);
+        {
+            receive->id = buf[0];
+            if (buf[1] > receive->len)
+                receive->partial = 1;
+            else if (buf[1] < receive->len)
+                receive->len = buf[1];
+
+            state.status = PAYLOAD;
+            state.tranceive(transmit->payload, transmit->len, receive->payload, receive->len);
             return;
+        }
 
         case PAYLOAD:
-            handle_payload(buf, len);
+        {
+            state.status = FOOTER;
+            state.tranceive((uint8_t*)&transmit->crc, sizeof(uint16_t), (uint8_t*)&receive->crc, sizeof(uint16_t));
             return;
+        }
 
         case FOOTER:
-            handle_footer(buf, len);
-            return;
+        {
+            *(uint16_t*)state.buf = calculate_crc(receive) ;
+            
+            state.status = CHECKSUM;
+            state.tranceive(state.buf, sizeof(uint16_t), state.buf, sizeof(uint16_t));
 
-        default:
             return;
+        }
+
+        case CHECKSUM:
+        {
+            state.status = *(uint16_t*)state.buf == transmit->crc
+                ? IDLE
+                : FAILED;
+
+            return; 
+        }
     }
+}
+
+int8_t proto_tranceive(const proto_packet_t* transmit, proto_packet_t* receive)
+{
+	//if (state.status != IDLE)
+	    //return PROTO_BUSY;
+
+    *state.on_completed = completed;
+    state.transmit = transmit;
+    state.receive = receive;
+
+    state.status = HEADER;
+    return state.tranceive((uint8_t*)&transmit->id, PROTO_HEADER, state.buf, PROTO_HEADER);
 }

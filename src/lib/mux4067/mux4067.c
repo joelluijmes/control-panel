@@ -16,35 +16,40 @@ void mux4067_init(void)
 {
     //Starts AD in Free Running mode with prescaler of 128
     ADMUX = 1 << REFS0 | MUX4067_ADC_MASK;			// AVCC as reference | ADC0
-    ADCSRA = 1 << ADEN | 1 << ADPS2 | 1 << ADPS1 | 1 << ADPS0;
+    ADCSRA = 1 << ADEN | 1 << ADPS2;            // 16x prescaler (ADC clock must < 1MHz)
     
+    MUX4067_S1_DDR |= MUX4067_S1_MASK;
+    MUX4067_S2_DDR |= MUX4067_S2_MASK;
+    MUX4067_S3_DDR |= MUX4067_S3_MASK;
+    MUX4067_S4_DDR |= MUX4067_S4_MASK;
+    MUX4067_EN_DDR |= MUX4067_EN_MASK;
+
     ASSERT_EN();
 }
 
 uint16_t mux4067_read(uint8_t selection)
 {
-    ADCSRA |= 1 << ADSC;    // start adc
-    
-    if ((selection & (1 << 1)) != 0)
+    if (selection & (1 << 0))
         ASSERT_S1();
     else
         DISABLE_S1();
     
-    if ((selection & (1 << 2)) != 0)
+    if (selection & (1 << 1))
         ASSERT_S2();
     else
         DISABLE_S2();
     
-    if ((selection & (1 << 3)) != 0)
+    if (selection & (1 << 2))
         ASSERT_S3();
     else
         DISABLE_S3();
     
-    if ((selection & (1 << 4)) != 0)
+    if (selection & (1 << 3))
         ASSERT_S4();
     else
         DISABLE_S4();
-    
-    while ((ADCSRA & ADSC) == 1) ; // = 1 as long conversion is in progress
+
+    ADCSRA |= 1 << ADSC;    // start adc
+    while (ADCSRA & (1 << ADSC)) ; // = 1 as long conversion is in progress
     return ADC;
 }

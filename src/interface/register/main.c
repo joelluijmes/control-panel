@@ -1,13 +1,15 @@
-#include <util/delay.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-
-#include "io.h"
+#include "config.h"
 #include "display.h"
 
 #include "../../lib/mux4067/mux4067.h"
 #include "../../lib/spi/single/spi_single.h"
 #include "../../lib/max7221/max7221.h"
+#include "../../lib/protos/protos.h"
+#include "../../models/register.h"
+
+#include <util/delay.h>
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
 uint16_t read_mux(uint16_t value)
 {
@@ -19,21 +21,22 @@ uint16_t read_mux(uint16_t value)
             value |= (1 << i);
         else if (val < 250)
             value &= ~(1 << i);
-
-        _delay_us(10);
     }
 
     return value;
 }
 
-typedef struct display_register_t
+ISR(PCINT0_vect)
 {
-    uint16_t value : 12;
-    uint8_t updated : 1;
-} display_register_t;
+    //if (!(PIN_SS & MASK_SS))
+        //return;
+//
+    //volatile proto_status_t status = proto_status();
+//
+        //spi_reset();
+}
 
 static volatile uint8_t updated = 0;
-
 ISR(PCINT2_vect)
 {
     if (BUTTON_PIN & BUTTON_MASK)
@@ -45,36 +48,66 @@ int main(void)
     BUTTON_DDR |= BUTTON_MASK;
 
     // PCINT16
-    PCICR = 1 << PCIE2;
+    PCICR = 1 << PCIE0 | 1 << PCIE2;
+    //PCMSK0 = 1 << PCINT2;
     PCMSK2 = 1 << PCINT16;
 
     max7221_init();
-    mux4067_init();
+    //mux4067_init();
 
-    spi_init(SPI_SLAVE, SPI_32X);
-    sei();
+    //spi_init(SPI_SLAVE | SPI_NONBLOCKING, SPI_64X);
+    //sei();
+//
+    //proto_init(spi_tranceive, &spi_state.on_completed);
     
-    display_register_t reg = { 0 };
+    register_display_t tmp = { 0 };
+    register_display_t reg = { 0 };
     uint16_t value = 0;
 
     while (1) 
     {
-        // process user interation
-        reg.value = read_mux(value);
-        display_update(reg.value);
+        PORT_MISO |= MASK_MISO;
 
+        //reg.value = read_mux(value);
+        
+        
+        display_update(value);
+        
 
-        // if the value did change by any switch, we say we have updated it
-        reg.updated = updated;
-            
-        // exchange registers from master, either we get a new register to display (and possibly alter it)
-        // or we still display the old register. In both ways we let know if we pressed the button, and changed the value
-        if (spi_tranceive((uint8_t*)&reg, sizeof(reg)) != SPI_OK)
-            continue;
-        while (!spi_completed()) ;
+        //if (updated)
+            //value = reg.value;
+//
+        //reg.updated = updated;
+            //
+        //volatile proto_status_t status = proto_status();
+        //if (status == IDLE)
+        //{
+            //if (tmp.updated)
+                //value = tmp.value;
+        //}
 
-        // if the master changed register, we need to update our screen
-        if (reg.updated)
-            value = reg.value;
+        PORT_MISO &= ~MASK_MISO;
+
+        ++value;
+        _delay_ms(10);
+
+        //continue;
+//
+        //if (status == IDLE || status == FAILED || (PIN_SS & MASK_SS))
+        //{
+            //if (status == IDLE) 
+                //__asm("nop");
+            //if (status == FAILED)
+                //__asm("nop");
+                //
+            //proto_packet_t transmit = proto_create(20, (uint8_t*)&reg, sizeof(register_display_t));
+            //proto_packet_t receive = proto_create_empty((uint8_t*)&tmp, sizeof(register_display_t));
+//
+            //spi_reset();
+//
+            //proto_tranceive(&transmit, &receive);
+        //} 
+
+        updated = 0;        
     }
 }

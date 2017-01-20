@@ -12,3 +12,5 @@
 
 ..\..\src\lib\protos\protos.c
 
+..\..\src\lib\mcp23s17\mcp23s17.c
+

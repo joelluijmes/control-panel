@@ -2,6 +2,8 @@
 
 #include <avr/io.h>
 
+#define F_CPU               8000000
+
 #define BUTTON_DDR          DDRD
 #define BUTTON_PIN          PIND
 #define BUTTON_MASK         (1 << 0)
@@ -54,6 +56,7 @@
 #define DDR_MISO		    DDRB
 #define MASK_MISO		    (1 << 4)
 
+#define PIN_SS		        PINB
 #define PORT_SS		        PORTB
 #define DDR_SS		        DDRB
 #define MASK_SS		        (1 << 2)

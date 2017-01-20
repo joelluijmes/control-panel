@@ -1,5 +1,5 @@
+#include "config.h"
 #include "display.h"
-#include "io.h"
 #include "../../lib/max7221/max7221.h"
 
 #define BIT_0 (1 << 6)
