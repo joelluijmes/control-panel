@@ -4,6 +4,10 @@
 
 ..\..\src\controller\main.c
 
+..\..\src\controller\backplane.c
+
+..\..\src\controller\frontend.c
+
 ..\..\src\lib\spi\double\spi_double.c
 
 ..\..\src\lib\spi\single\spi_single.c

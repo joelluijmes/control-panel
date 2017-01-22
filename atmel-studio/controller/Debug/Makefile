@@ -45,6 +45,8 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../../../src/controller/main.c \
+../../../src/controller/backplane.c \
+../../../src/controller/frontend.c \
 ../../../src/lib/spi/double/spi_double.c \
 ../../../src/lib/spi/single/spi_single.c \
 ../../../src/lib/spi/spi.c \
@@ -60,6 +62,8 @@ ASM_SRCS +=
 
 OBJS +=  \
 main.o \
+backplane.o \
+frontend.o \
 lib/spi/double/spi_double.o \
 lib/spi/single/spi_single.o \
 lib/spi/spi.o \
@@ -68,6 +72,8 @@ lib/mcp23s17/mcp23s17.o
 
 OBJS_AS_ARGS +=  \
 main.o \
+backplane.o \
+frontend.o \
 lib/spi/double/spi_double.o \
 lib/spi/single/spi_single.o \
 lib/spi/spi.o \
@@ -76,6 +82,8 @@ lib/mcp23s17/mcp23s17.o
 
 C_DEPS +=  \
 main.d \
+backplane.d \
+frontend.d \
 lib/spi/double/spi_double.d \
 lib/spi/single/spi_single.d \
 lib/spi/spi.d \
@@ -84,6 +92,8 @@ lib/mcp23s17/mcp23s17.d
 
 C_DEPS_AS_ARGS +=  \
 main.d \
+backplane.d \
+frontend.d \
 lib/spi/double/spi_double.d \
 lib/spi/single/spi_single.d \
 lib/spi/spi.d \
@@ -104,6 +114,10 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
+
+
 
 
 

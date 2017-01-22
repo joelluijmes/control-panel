@@ -8,8 +8,6 @@
 #define BUTTON_PIN          PIND
 #define BUTTON_MASK         (1 << 0)
 
-#define MAX7221_DEVICES 1
-
 #define MAX7221_DATA_DDR    DDRB
 #define MAX7221_DATA_PORT   PORTB
 #define MAX7221_DATA_MASK   (1 << 1)
@@ -44,19 +42,19 @@
 
 #define MUX4067_ADC_MASK    2
 
-#define PORT_MOSI		    PORTB
-#define DDR_MOSI		    DDRB
-#define MASK_MOSI		    (1 << 3)
+#define MOSI_DDR	DDRB
+#define MOSI_PORT	PORTB
+#define MOSI_MASK	(1 << 3)
 
-#define PORT_SCK		    PORTB
-#define DDR_SCK		        DDRB
-#define MASK_SCK		    (1 << 5)
+#define SCK_DDR		DDRB
+#define SCK_PORT	PORTB
+#define SCK_MASK	(1 << 5)
 
-#define PORT_MISO		    PORTB
-#define DDR_MISO		    DDRB
-#define MASK_MISO		    (1 << 4)
+#define MISO_DDR	DDRB
+#define MISO_PORT	PORTB
+#define MISO_MASK	(1 << 4)
 
-#define PIN_SS		        PINB
-#define PORT_SS		        PORTB
-#define DDR_SS		        DDRB
-#define MASK_SS		        (1 << 2)
+#define SS_DDR		DDRB
+#define SS_PIN		PINB
+#define SS_PORT		PORTB
+#define SS_MASK     (1 << 2)

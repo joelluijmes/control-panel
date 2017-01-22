@@ -6,7 +6,7 @@
 
 #ifdef SPI_SINGLE
 
-spi_state_t spi_state = { .spdr = &SPDR, .spsr = &SPSR, .spcr = &SPCR };
+spi_state_t spi_state = { .spdr = &SPDR, .spsr = &SPSR, .spcr = &SPCR, .tranceive_byte = spi_tranceive_byte };
 
 void spi_init(uint8_t mode, uint8_t divider)
 {
@@ -15,19 +15,19 @@ void spi_init(uint8_t mode, uint8_t divider)
 
     if (mode == SPI_MASTER)
     {
-        DDR_MISO &= ~MASK_MISO;
-        DDR_MOSI |= MASK_MOSI;
-        DDR_SCK |= MASK_SCK;
-        DDR_SS |= MASK_SS;
+        MISO_DDR &= ~MISO_MASK;
+        MOSI_DDR |= MOSI_MASK;
+        SCK_DDR |= SCK_MASK;
+        SS_DDR |= SS_MASK;
 
         SPCR |= 1 << MSTR;
     }
     else if (mode & SPI_SLAVE)
     {
-        DDR_MISO |= MASK_MISO;
-        DDR_MOSI &= ~MASK_MOSI;
-        DDR_SCK &= ~MASK_SCK;
-        DDR_SS &= ~MASK_SS;
+        MISO_DDR |= MISO_MASK;
+        MOSI_DDR &= ~MOSI_MASK;
+        SCK_DDR &= ~SCK_MASK;
+        SS_DDR &= ~SS_MASK;
     }
         
     if (divider & 0x04)
@@ -70,9 +70,9 @@ int8_t spi_transmit(uint8_t* buffer, uint8_t len)
     return spi_tranceive(buffer, len, NULL, len);
 }
 
-int8_t spi_tranceive_byte(uint8_t c)
+uint8_t spi_tranceive_byte(uint8_t tran)
 {
-    SPDR = c;
+    SPDR = tran;
     while (!(SPSR & (1 << SPIF))) ;
     
     return SPDR;

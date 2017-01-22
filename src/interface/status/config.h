@@ -4,9 +4,6 @@
 
 #define F_CPU           8000000
 
-#define MAX7221_DEVICES 1
-#define MAX7221_DECODE (1 << 0 | 0 << 1 | 1 << 2 | 1 << 3 | 1 << 4 | 0 << 5)
-
 #define MAX7221_DATA_DDR    DDRA
 #define MAX7221_DATA_PORT   PORTA
 #define MAX7221_DATA_MASK   (1 << 1)
@@ -22,22 +19,22 @@
 #define POT_ADC (1 << 1)            // ADC 2
 #define CLOCK_ADC (1 << 1 | 1 << 0) // ADC 3
 
-#define PORT_MOSI		    PORTB
-#define DDR_MOSI		    DDRB
-#define MASK_MOSI		    (1 << 3)
+#define MOSI_DDR	DDRB
+#define MOSI_PORT	PORTB
+#define MOSI_MASK	(1 << 3)
 
-#define PORT_SCK		    PORTB
-#define DDR_SCK		        DDRB
-#define MASK_SCK		    (1 << 5)
+#define SCK_DDR		DDRB
+#define SCK_PORT	PORTB
+#define SCK_MASK	(1 << 5)
 
-#define PORT_MISO		    PORTB
-#define DDR_MISO		    DDRB
-#define MASK_MISO		    (1 << 4)
+#define MISO_DDR	DDRB
+#define MISO_PORT	PORTB
+#define MISO_MASK	(1 << 4)
 
-#define PIN_SS		        PINB
-#define PORT_SS		        PORTB
-#define DDR_SS		        DDRB
-#define MASK_SS		        (1 << 2)
+#define SS_DDR		DDRB
+#define SS_PIN		PINB
+#define SS_PORT		PORTB
+#define SS_MASK     (1 << 2)
 
 #define ROT1_DDR    DDRB
 #define ROT1_PIN    PINB
@@ -59,3 +56,6 @@
 #define ROT8_PORT   PORTD
 #define ROT8_MASK   (1 << 6)
 
+#define LED_CLK_DDR     DDRA
+#define LED_CLK_PORT    PORTA
+#define LED_CLK_MASK    (1 << 3)

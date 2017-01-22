@@ -45,9 +45,6 @@ int8_t _spi_tranceive(spi_state_t* state)
 	
 	for (; i < len; ++i)
 	{
-		if (state->mode == SPI_MASTER)
-		    _delay_us(75);
-		
 		uint8_t tran = i < tran_len ? tran_buf[i] : 0xFF;
 	    uint8_t recv = state->tranceive_byte(tran);	
 		

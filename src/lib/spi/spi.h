@@ -16,11 +16,10 @@
 #define SPI_BUSY    -1
 #define SPI_PENDING -2
 
-
-#define SPI_MASTER 0
-#define SPI_SLAVE 1
-#define SPI_BLOCKING 0
-#define SPI_NONBLOCKING 2
+#define SPI_MASTER      0
+#define SPI_SLAVE       1
+#define SPI_BLOCKING    0
+#define SPI_NONBLOCKING 2 
 
 #define SPI_2X      4
 #define SPI_4X      0
@@ -32,7 +31,7 @@
 
 typedef struct spi_state_t spi_state_t;
 typedef void (*spi_completed_t)(spi_state_t* state);
-typedef uint8_t (*spi_tranceive_byte_t)(uint8_t c);
+typedef uint8_t (*spi_tranceive_byte_t)(uint8_t tran);
 
 struct spi_state_t 
 {

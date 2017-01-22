@@ -109,6 +109,8 @@ static void completed()
 
         case FOOTER:
         {
+            __asm("nop");
+
             *(uint16_t*)state.buf = calculate_crc(receive) ;
             
             state.status = CHECKSUM;

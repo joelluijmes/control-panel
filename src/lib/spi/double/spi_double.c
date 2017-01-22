@@ -6,20 +6,20 @@
 
 #ifdef SPI_DOUBLE
 
-spi_state_t spi_state_0 = { .spdr = &SPDR0, .spsr = &SPSR0, .spcr = &SPCR0, .tranceive_byte = &spi_tranceive_byte_0 };
-spi_state_t spi_state_1 = { .spdr = &SPDR1, .spsr = &SPSR1, .spcr = &SPCR1, .tranceive_byte = &spi_tranceive_byte_1 };
+spi_state_t spi0_state = { .spdr = &SPDR0, .spsr = &SPSR0, .spcr = &SPCR0, .tranceive_byte = spi0_tranceive_byte };
+spi_state_t spi1_state = { .spdr = &SPDR1, .spsr = &SPSR1, .spcr = &SPCR1, .tranceive_byte = spi1_tranceive_byte };
 
-void spi_init_0(uint8_t mode, uint8_t divider)
+void spi0_init(uint8_t mode, uint8_t divider)
 {
-    spi_state_0.mode = mode;
-
-    SPCR0 = 1 << SPE | (divider & 0x03);
+    spi0_state.mode = mode;
 
     if (mode == SPI_MASTER)
     {
-        DDR_MOSI_0 |= MASK_MOSI_0;
-        DDR_SCK_0 |= MASK_SCK_0;
-        DDR_SS_0 |= MASK_SS_0;
+        MOSI0_DDR |= MOSI0_MASK;
+        SCK0_DDR |= SCK0_MASK;
+        SS0_DDR |= SS0_MASK;
+        SS0_PORT |= SS0_MASK;
+        
         SPCR0 |= 1 << MSTR;
     } 
     else if (mode == SPI_SLAVE)
@@ -29,20 +29,22 @@ void spi_init_0(uint8_t mode, uint8_t divider)
 
     if (divider & 0x04)
         SPSR0 |= 1 << SPI2X;
+
+    SPCR0 |= 1 << SPE | (divider & 0x03);
 }
 
-void spi_init_1(uint8_t mode, uint8_t divider)
+void spi1_init(uint8_t mode, uint8_t divider)
 {
-    spi_state_1.mode = mode;
-
-    SPCR1 = 1 << SPE1 | (divider & 0x03);
+    spi1_state.mode = mode;
 
     if (mode == SPI_MASTER)
     {
-        DDR_MOSI_1 |= MASK_MOSI_1;
-        DDR_SCK_1 |= MASK_SCK_1;
-        DDR_SS_1 |= MASK_SS_1;
-        SPCR1 |= 1 << MSTR1;
+        MOSI1_DDR |= MOSI1_MASK;
+        SCK1_DDR |= SCK1_MASK;
+        SS1_DDR |= SS1_MASK;
+        SS1_PORT |= SS1_MASK;
+        
+        SPCR1 |= 1 << MSTR1;        
     }
     else if (mode == SPI_SLAVE)
     {
@@ -51,59 +53,61 @@ void spi_init_1(uint8_t mode, uint8_t divider)
 
     if (divider & 0x04)
         SPSR1 |= 1 << SPI2X;
+
+    SPCR1 |= 1 << SPE1 | (divider & 0x03);
 }
 
-uint8_t spi_completed_0(void) 
+uint8_t spi0_completed(void) 
 {
-    return !spi_state_0.running;    
+    return !spi0_state.running;    
 }
 
-uint8_t spi_completed_1(void)
+uint8_t spi1_completed(void)
 {
-    return !spi_state_1.running;
+    return !spi1_state.running;
 }
 
-int8_t spi_tranceive_0(const uint8_t* tran_buf, uint8_t tran_len, uint8_t* recv_buf, uint8_t recv_len)
+int8_t spi0_tranceive(const uint8_t* tran_buf, uint8_t tran_len, uint8_t* recv_buf, uint8_t recv_len)
 {
-    spi_state_0.tran_buf = tran_buf;
-    spi_state_0.tran_len = tran_len;
-    spi_state_0.recv_buf = recv_buf;
-    spi_state_0.recv_len = recv_len;
+    spi0_state.tran_buf = tran_buf;
+    spi0_state.tran_len = tran_len;
+    spi0_state.recv_buf = recv_buf;
+    spi0_state.recv_len = recv_len;
 
-    return _spi_tranceive(&spi_state_0);
+    return _spi_tranceive(&spi0_state);
 }
 
-int8_t spi_receive_0(uint8_t* buffer, uint8_t len)
+int8_t spi0_receive(uint8_t* buffer, uint8_t len)
 {
-    return spi_tranceive_0(NULL, 0, buffer, len);
+    return spi0_tranceive(NULL, 0, buffer, len);
 }
 
-int8_t spi_transmit_0(const uint8_t* buffer, uint8_t len)
+int8_t spi0_transmit(const uint8_t* buffer, uint8_t len)
 {
-    return spi_tranceive_0(buffer, len, NULL, 0);
+    return spi0_tranceive(buffer, len, NULL, 0);
 }
 
-int8_t spi_tranceive_1(const uint8_t* tran_buf, uint8_t tran_len, uint8_t* recv_buf, uint8_t recv_len)
+int8_t spi1_tranceive(const uint8_t* tran_buf, uint8_t tran_len, uint8_t* recv_buf, uint8_t recv_len)
 {
-    spi_state_1.tran_buf = tran_buf;
-    spi_state_1.tran_len = tran_len;
-    spi_state_1.recv_buf = recv_buf;
-    spi_state_1.recv_len = recv_len;
+    spi1_state.tran_buf = tran_buf;
+    spi1_state.tran_len = tran_len;
+    spi1_state.recv_buf = recv_buf;
+    spi1_state.recv_len = recv_len;
 
-    return _spi_tranceive(&spi_state_1);
+    return _spi_tranceive(&spi1_state);
 }
 
-int8_t spi_receive_1(uint8_t* buffer, uint8_t len)
+int8_t spi1_receive(uint8_t* buffer, uint8_t len)
 {
-    return spi_tranceive_1(NULL, 0, buffer, len);
+    return spi1_tranceive(NULL, 0, buffer, len);
 }
 
-int8_t spi_transmit_1(const uint8_t* buffer, uint8_t len)
+int8_t spi1_transmit(const uint8_t* buffer, uint8_t len)
 {
-    return spi_tranceive_1(buffer, len, NULL, 0);
+    return spi1_tranceive(buffer, len, NULL, 0);
 }
 
-int8_t spi_tranceive_byte_0(uint8_t c)
+uint8_t spi0_tranceive_byte(uint8_t c)
 {
     SPDR0 = c;
     while (!(SPSR0 & (1 << SPIF))) ;
@@ -111,7 +115,7 @@ int8_t spi_tranceive_byte_0(uint8_t c)
     return SPDR0;
 }
 
-int8_t spi_tranceive_byte_1(uint8_t c)
+uint8_t spi1_tranceive_byte(uint8_t c)
 {
     SPDR1 = c;
     while (!(SPSR1 & (1 << SPIF))) ;
@@ -121,12 +125,12 @@ int8_t spi_tranceive_byte_1(uint8_t c)
 
 //ISR(SPI0_STC_vect)
 //{
-    //_spi_isr(&spi_state_0);
+    //_spi_isr(&spi0_state);
 //}
 //
 //ISR(SPI1_STC_vect)
 //{
-    //_spi_isr(&spi_state_1);
+    //_spi_isr(&spi1_state);
 //}
 
 #endif

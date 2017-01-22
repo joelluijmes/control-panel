@@ -12,6 +12,6 @@ uint8_t spi_completed(void);
 int8_t spi_tranceive(const uint8_t* tran_buf, uint8_t tran_len, uint8_t* recv_buf, uint8_t recv_len);
 int8_t spi_receive(uint8_t* buffer, uint8_t len);
 int8_t spi_transmit(uint8_t* buffer, uint8_t len);
-int8_t spi_tranceive_byte(uint8_t c);
+uint8_t spi_tranceive_byte(uint8_t c);
 
 #endif
