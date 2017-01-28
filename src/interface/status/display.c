@@ -17,6 +17,8 @@ static inline void print_status(sreg_t sreg)
 
 static inline void print_memory(memory_t mem)
 {
+    mem.enable = (*(uint8_t*)&mem) != 0;
+
     uint8_t val = *(uint8_t*)&mem;
     max7221_write(0, MAX7221_DIGIT1, val << 3);
 }

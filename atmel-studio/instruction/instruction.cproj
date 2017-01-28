@@ -20,12 +20,26 @@
     <OverrideVtor>false</OverrideVtor>
     <CacheFlash>true</CacheFlash>
     <ProgFlashFromRam>true</ProgFlashFromRam>
-    <RamSnippetAddress />
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
     <UncachedRange />
     <preserveEEPROM>true</preserveEEPROM>
-    <OverrideVtorValue />
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
     <BootSegment>2</BootSegment>
-    <eraseonlaunchrule>0</eraseonlaunchrule>
+    <eraseonlaunchrule>1</eraseonlaunchrule>
+    <avrtool>com.atmel.avrdbg.tool.atmelice</avrtool>
+    <avrtoolserialnumber>J41800037515</avrtoolserialnumber>
+    <avrdeviceexpectedsignature>0x1E9311</avrdeviceexpectedsignature>
+    <com_atmel_avrdbg_tool_atmelice>
+      <ToolOptions>
+        <InterfaceProperties>
+        </InterfaceProperties>
+        <InterfaceName>debugWIRE</InterfaceName>
+      </ToolOptions>
+      <ToolType>com.atmel.avrdbg.tool.atmelice</ToolType>
+      <ToolNumber>J41800037515</ToolNumber>
+      <ToolName>Atmel-ICE</ToolName>
+    </com_atmel_avrdbg_tool_atmelice>
+    <avrtoolinterface>debugWIRE</avrtoolinterface>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
@@ -68,42 +82,42 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <ToolchainSettings>
       <AvrGcc>
-  <avrgcc.common.Device>-mmcu=attiny88 -B "%24(PackRepoDir)\atmel\ATtiny_DFP\1.0.79\gcc\dev\attiny88"</avrgcc.common.Device>
-  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
-  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-  <avrgcc.compiler.symbols.DefSymbols>
-    <ListValues>
-      <Value>DEBUG</Value>
-    </ListValues>
-  </avrgcc.compiler.symbols.DefSymbols>
-  <avrgcc.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\atmel\ATtiny_DFP\1.0.79\include</Value>
-      <Value>../../../src/interface/instruction</Value>
-    </ListValues>
-  </avrgcc.compiler.directories.IncludePaths>
-  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
-  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-  <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
-  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-  <avrgcc.linker.libraries.Libraries>
-    <ListValues>
-      <Value>libm</Value>
-    </ListValues>
-  </avrgcc.linker.libraries.Libraries>
-  <avrgcc.assembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\atmel\ATtiny_DFP\1.0.79\include</Value>
-    </ListValues>
-  </avrgcc.assembler.general.IncludePaths>
-  <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
-</AvrGcc>
+        <avrgcc.common.Device>-mmcu=attiny88 -B "%24(PackRepoDir)\atmel\ATtiny_DFP\1.0.79\gcc\dev\attiny88"</avrgcc.common.Device>
+        <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+        <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+        <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+        <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+        <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+        <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+        <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+        <avrgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>DEBUG</Value>
+          </ListValues>
+        </avrgcc.compiler.symbols.DefSymbols>
+        <avrgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\atmel\ATtiny_DFP\1.0.79\include</Value>
+            <Value>../../../src/interface/instruction</Value>
+          </ListValues>
+        </avrgcc.compiler.directories.IncludePaths>
+        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+        <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+        <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
+        <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+        <avrgcc.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </avrgcc.linker.libraries.Libraries>
+        <avrgcc.assembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(PackRepoDir)\atmel\ATtiny_DFP\1.0.79\include</Value>
+          </ListValues>
+        </avrgcc.assembler.general.IncludePaths>
+        <avrgcc.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcc.assembler.debugging.DebugLevel>
+      </AvrGcc>
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
@@ -115,58 +129,76 @@
       <SubType>compile</SubType>
       <Link>display.h</Link>
     </Compile>
-    <Compile Include="config.h">
+    <Compile Include="..\..\src\interface\instruction\config.h">
       <SubType>compile</SubType>
-      <Link>io.h</Link>
+      <Link>config.h</Link>
     </Compile>
     <Compile Include="..\..\src\interface\instruction\main.c">
       <SubType>compile</SubType>
       <Link>main.c</Link>
     </Compile>
+    <Compile Include="..\..\src\lib\protos\protos.c">
+      <Link>lib\protos\protos</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\protos\protos.h">
+      <Link>lib\protos\protos</Link>
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="..\..\src\lib\max7221\max7221.c">
-      <Link>max7221.c</Link>
+      <Link>lib\max7221\max7221.c</Link>
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="..\..\src\lib\max7221\max7221.h">
-      <Link>max7221.h</Link>
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="..\..\src\lib\spi\double\spi_double.c">
-      <Link>double\spi_double.c</Link>
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="..\..\src\lib\spi\double\spi_double.h">
-      <Link>double\spi_double.h</Link>
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="..\..\src\lib\spi\single\spi_single.c">
-      <Link>single\spi_single.c</Link>
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="..\..\src\lib\spi\single\spi_single.h">
-      <Link>single\spi_single.h</Link>
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="..\..\src\lib\spi\spi.c">
-      <Link>spi.c</Link>
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="..\..\src\lib\spi\spi.h">
-      <Link>spi.h</Link>
+      <Link>lib\max7221\max7221.h</Link>
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="..\..\src\lib\stp16cpc26\stp16cpc26.c">
-      <Link>stp16cpc26.c</Link>
+      <Link>lib\stp16cpc26\stp16cpc26.c</Link>
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="..\..\src\lib\stp16cpc26\stp16cpc26.h">
-      <Link>stp16cpc26.h</Link>
+      <Link>lib\stp16cpc26\stp16cpc26.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\spi\double\spi_double.c">
+      <Link>lib\spi\double\spi_double.c</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\spi\double\spi_double.h">
+      <Link>lib\spi\double\spi_double.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\spi\single\spi_single.c">
+      <Link>lib\spi\single\spi_single.c</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\spi\single\spi_single.h">
+      <Link>lib\spi\single\spi_single.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\models\instruction.h">
+      <Link>models\instruction.h</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\spi\spi.c">
+      <Link>lib\spi\spi.c</Link>
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="..\..\src\lib\spi\spi.h">
+      <Link>lib\spi\spi.h</Link>
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="double\" />
-    <Folder Include="single\" />
+    <Folder Include="models\" />
+    <Folder Include="lib\" />
+    <Folder Include="lib\max7221\" />
+    <Folder Include="lib\stp16cpc26\" />
+    <Folder Include="lib\spi\" />
+    <Folder Include="lib\spi\double\" />
+    <Folder Include="lib\spi\single\" />
+    <Folder Include="lib\protos" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

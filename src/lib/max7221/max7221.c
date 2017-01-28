@@ -25,7 +25,11 @@ void max7221_init(void)
         max7221_write(i, MAX7221_DECODEMODE, 0);       // we use software decoding for characters
         max7221_write(i, MAX7221_SHUTDOWN, 1);         // enable the chip
         max7221_write(i, MAX7221_INTENSITY, 8);        // set intensity to 8 (0 - 15)
-    }
+
+        // clear the displays
+        for (uint8_t j = MAX7221_DIGIT0; j <= MAX7221_DIGIT7; ++j)
+            max7221_write(i, j, 0);
+    }    
 }
 
 void max7221_write(uint8_t device, uint8_t address, uint8_t data)
@@ -33,9 +37,13 @@ void max7221_write(uint8_t device, uint8_t address, uint8_t data)
     // buffer for storing commands, the devices which aren't addressed get a NOP command
     uint8_t arr[MAX7221_DEVICES*2] = { 0 };
 
+    int8_t n = MAX7221_DEVICES - device - 1;
+    if (n < 0 || n >= MAX7221_DEVICES)
+        return;
+
     // store the command in the buffer
-    arr[device*2] = address;
-    arr[device*2 + 1] = data;
+    arr[n*2] = address;
+    arr[n*2 + 1] = data;
 
     spi_write(arr, MAX7221_DEVICES*2);
 }
@@ -73,11 +81,8 @@ static void spi_write(const uint8_t* const arr, uint8_t len)
             else
                 DATA_DISABLE();
 
-            _delay_us(5);
             SCK_ASSERT();
-            _delay_us(5);
             SCK_DISABLE();
-            _delay_us(5);
         }
     }
 

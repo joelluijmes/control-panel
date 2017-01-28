@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../models/hpu.h"
+#include "../models/backplane.h"
+
+extern backplane_t backplane;
 
 void backplane_init(void);
 void backplane_read(void);
-hpu_t* backplane_hpu();

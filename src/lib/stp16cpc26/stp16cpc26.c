@@ -29,7 +29,6 @@ void stp16_output(uint8_t enable)
 void stp16_latch(void)
 {
     LE_ASSERT();
-    _delay_us(100);
     LE_DISABLE();
 }
 
@@ -42,10 +41,7 @@ void stp16_shift(uint16_t val)
         else
             DATA_DISABLE();
 
-        _delay_us(100);
         CLK_ASSERT();
-        _delay_us(100);
         CLK_DISABLE();
-        _delay_us(100);
     }
 }

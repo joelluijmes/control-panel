@@ -73,38 +73,38 @@ static inline void print_operand(const operand_t* const operand)
 {
     switch (operand->register_op)
     {
-    case R0:
-    case R1:
-    case R2:
-    case R3:
-    case R4:
-    case R5:
-    case R6:
-    case R7:
+    case REG_R0:
+    case REG_R1:
+    case REG_R2:
+    case REG_R3:
+    case REG_R4:
+    case REG_R5:
+    case REG_R6:
+    case REG_R7:
         max7221_display(1, MAX7221_DIGIT0, 0xFF);
         max7221_display(1, MAX7221_DIGIT4, 'R');   // R
         max7221_display(1, MAX7221_DIGIT6, (uint8_t)operand->register_op);
         return;
 
-    case PC:
+    case REG_PC:
         max7221_display(1, MAX7221_DIGIT0, 0xFF);
         max7221_display(1, MAX7221_DIGIT4, 'P');
         max7221_display(1, MAX7221_DIGIT6, 'C');
         return;
 
-    case MDR:
+    case REG_MDR:
         max7221_display(1, MAX7221_DIGIT0, 'M');
         max7221_display(1, MAX7221_DIGIT4, 'D');
         max7221_display(1, MAX7221_DIGIT6, 'R');
         return;
 
-    case MAR:
+    case REG_MAR:
         max7221_display(1, MAX7221_DIGIT0, 'M');
         max7221_display(1, MAX7221_DIGIT4, 'A');
         max7221_display(1, MAX7221_DIGIT6, 'R');
         return;
 
-    case STATUS_REG:
+    case REG_STATUS_REG:
         max7221_display(1, MAX7221_DIGIT0, 'S');
         max7221_display(1, MAX7221_DIGIT4, 'R');
         max7221_display(1, MAX7221_DIGIT6, 'G');
@@ -116,23 +116,23 @@ static inline void print_operand(const operand_t* const operand)
         //max7221_display(1, 6, 'X');
         //return;
 
-    case Y:
+    case REG_Y:
         max7221_display(1, MAX7221_DIGIT0, 0xFF);
         max7221_display(1, MAX7221_DIGIT4, 0xFF);
         max7221_display(1, MAX7221_DIGIT6, 'Y');
         break;
 
-    case Z:
+    case REG_Z:
         max7221_display(1, MAX7221_DIGIT0, 0xFF);
         max7221_display(1, MAX7221_DIGIT4, 0xFF);
         max7221_display(1, MAX7221_DIGIT6, 'Z');
         return;
 
-    case STACK_POINTER:
-        max7221_display(1, MAX7221_DIGIT0, 0xFF);
-        max7221_display(1, MAX7221_DIGIT4, 'S');
-        max7221_display(1, MAX7221_DIGIT6, 'P');
-        return;
+    //case STACK_POINTER:
+        //max7221_display(1, MAX7221_DIGIT0, 0xFF);
+        //max7221_display(1, MAX7221_DIGIT4, 'S');
+        //max7221_display(1, MAX7221_DIGIT6, 'P');
+        //return;
     }    
 
     max7221_display(1, MAX7221_DIGIT6, operand->immediate%0x10);
@@ -158,8 +158,3 @@ void display_update(const instruction_t* const instruction)
     else
         print_operand(&instruction->operand_c);
 }
-
-//instruction_t* const display_get(void)
-//{
-    //return &display;
-//}

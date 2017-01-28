@@ -7,9 +7,11 @@
 #include "../../models/status.h"
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
+#include <avr/wdt.h>
 #include <util/delay.h>
 #include <stdlib.h>
-#include <avr/interrupt.h>
+
 
 static uint16_t read_adc(uint8_t mux)
 {
@@ -52,6 +54,13 @@ static uint8_t read_switch()
 
 int main(void)
 {   
+    // make sure WDT is disabled after a reset
+    MCUSR &= ~(1 << WDRF);
+    WDTCSR |= (1 << WDCE) | (1 << WDE);
+    WDTCSR = 0x00;
+    
+    // wdt_enable(WDTO_30MS);
+
     // initialize the ADC with prescaler of 16x (ADC clock must < 1MHz)
     ADMUX = 1 << REFS0;
     ADCSRA = 1 << ADEN | 1 << ADPS2;
@@ -65,10 +74,6 @@ int main(void)
     // initialize display driver
     max7221_init();
 
-    // placeholders
-    status_state_t state = { 0 };
-    status_display_t display = { 0 };
-
     // initialize the SPI, note that the slave is nonblocking for the first byte, meaning
     // that continues until the interrupt is called. The rest of the SPI transmission is
     // blocking.
@@ -76,32 +81,52 @@ int main(void)
     proto_init(spi_tranceive, &spi_state.on_completed);
     sei();
 
+    // placeholders
+    static status_state_t state, tmp_state;
+    static status_display_t display, tmp_display;
+    static proto_status_t status;
+
+    uint8_t updated = 0;
     while (1)
     {
-        // do the user processing of the interface
-        state.clock.clock_speed = read_adc(POT_ADC);
-        state.selected = read_rot();
+        status = proto_status();
 
-        // if we are not tranceiving we are updating the packet to be tranceived.
-        // if we are tranceiving, but the SS is high the transmission has been corrupt and has to be reset
-        volatile proto_status_t status = proto_status();
-        if (status == IDLE || status == FAILED || (SS_PIN & SS_MASK))
+        // while the transmission hasn't completed, process user interaction
+        while (status != IDLE && status != FAILED)
         {
-            if (status == IDLE)
+            wdt_reset();
+
+            // received valid packet to display
+            if (updated)
                 display_update(&display);
 
-            // debug
-            if (status == FAILED)
-                __asm("nop");
+            // do the user processing of the interface
+            state.clock.clock_speed = read_adc(POT_ADC);
+            state.clock.clock_mode = read_switch();
+            state.selected = read_rot();
 
-            // create the packets
-            proto_packet_t transmit = proto_create(10, (uint8_t*)&state, sizeof(state));
-            proto_packet_t receive = proto_create_empty((uint8_t*)&display, sizeof(display));
+            status = proto_status();
+        }
+        
+        // debug
+        if (status == FAILED)
+            __asm("nop");
 
-            // make sure the SPI hardware is in a valid state
-            spi_reset();
-            // set the packets to be tranceived
-            proto_tranceive(&transmit, &receive);
-        }     
+        // update the display on successful transmission :)
+        if (status == IDLE)
+        {
+            display = tmp_display;
+            updated = 1;
+        }
+
+        tmp_state = state;
+
+        // create the packets
+        proto_packet_t transmit = proto_create(3, (uint8_t*)&tmp_state, sizeof(status_state_t));
+        proto_update_crc(&transmit);
+
+        proto_packet_t receive = proto_create(30, (uint8_t*)&tmp_display, sizeof(status_display_t));
+        // set the packets to be tranceived
+        proto_tranceive(&transmit, &receive);
     }
 }

@@ -62,5 +62,5 @@ uint16_t mcp23_read_wide(uint8_t addr, uint8_t reg)
 
     MCP23_SS12_PORT |= MCP23_SS12_MASK; MCP23_SS3_PORT |= MCP23_SS3_MASK;
 
-    return buf_out[2] | (buf_out[3] << 8);
+    return (buf_out[2] << 8) | buf_out[3];
 }

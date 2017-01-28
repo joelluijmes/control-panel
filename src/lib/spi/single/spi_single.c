@@ -19,6 +19,7 @@ void spi_init(uint8_t mode, uint8_t divider)
         MOSI_DDR |= MOSI_MASK;
         SCK_DDR |= SCK_MASK;
         SS_DDR |= SS_MASK;
+        SS_PORT |= SS_MASK;
 
         SPCR |= 1 << MSTR;
     }

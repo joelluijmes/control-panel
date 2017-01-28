@@ -12,6 +12,16 @@ main.d main.o: ../../../src/controller/main.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\fuse.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
  ../../../src/controller/frontend.h \
+ ../../../src/controller/../models/hpu.h \
+ ../../../src/controller/../models/instruction.h \
+ ../../../src/controller/../models/status.h \
+ ../../../src/controller/../models/register.h \
+ ../../../src/controller/backplane.h \
+ ../../../src/controller/../models/backplane.h \
+ ../../../src/controller/../lib/protos/protos.h \
+ ../../../src/controller/../lib/spi/spi.h \
+ ../../../src/controller/../lib/spi/double/spi_double.h \
+ ../../../src/controller/../lib/mcp23s17/mcp23s17.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h
@@ -41,6 +51,26 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h:
 
 ../../../src/controller/frontend.h:
+
+../../../src/controller/../models/hpu.h:
+
+../../../src/controller/../models/instruction.h:
+
+../../../src/controller/../models/status.h:
+
+../../../src/controller/../models/register.h:
+
+../../../src/controller/backplane.h:
+
+../../../src/controller/../models/backplane.h:
+
+../../../src/controller/../lib/protos/protos.h:
+
+../../../src/controller/../lib/spi/spi.h:
+
+../../../src/controller/../lib/spi/double/spi_double.h:
+
+../../../src/controller/../lib/mcp23s17/mcp23s17.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h:
 

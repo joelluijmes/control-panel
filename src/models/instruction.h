@@ -19,26 +19,6 @@ typedef struct alu_t
     uint16_t carry : 1;
 } alu_t;
 
-//typedef enum registers_t
-//{
-    //R0,
-    //R1,
-    //R2,
-    //R3,
-    //R4,
-    //R5,
-    //R6,
-    //R7,
-    //PC,
-    //MDR,
-    //MAR,
-    //STATUS_REG,
-    //Y,
-    //Z,
-    //STACK_POINTER,
-    //REGISTER_DISABLED = 0x0F,
-//} registers_t;
-
 typedef struct operand_t
 {
     hpu_decoder_t register_op : 4;
@@ -48,7 +28,7 @@ typedef struct operand_t
 
 typedef enum condition_t
 {
-    CONDITION_DISABLED = 0,
+    DISABLED = 0x07,
     SIGN = 'S',
     OVERFLOW = 'V',
     NEGATIVE = 'N',

@@ -7,7 +7,7 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_copy_data.o)
                               lib/spi/single/spi_single.o (__do_copy_data)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_clear_bss.o)
-                              lib/protos/protos.o (__do_clear_bss)
+                              main.o (__do_clear_bss)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_udivmodhi4.o)
                               c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_divmodhi4.o) (__udivmodhi4)
 
@@ -39,6 +39,8 @@ Discarded input sections
  .text          0x00000000        0x0 lib/spi/single/spi_single.o
  .data          0x00000000        0x0 lib/spi/single/spi_single.o
  .bss           0x00000000        0x0 lib/spi/single/spi_single.o
+ .text.spi_reset
+                0x00000000       0x28 lib/spi/single/spi_single.o
  .text.spi_completed
                 0x00000000       0x10 lib/spi/single/spi_single.o
  .text.spi_receive
@@ -265,7 +267,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x8b8
+.text           0x00000000      0x94c
  *(.vectors)
  .vectors       0x00000000       0x28 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATtiny_DFP/1.0.79/gcc/dev/attiny88/avr25/crtattiny88.o
                 0x00000000                __vector_default
@@ -346,74 +348,71 @@ END GROUP
                 0x00000060                . = ALIGN (0x2)
  *(.text.*)
  .text.display_update
-                0x00000060       0xa8 display.o
+                0x00000060       0xb4 display.o
                 0x00000060                display_update
  .text.startup.main
-                0x00000108      0x13e main.o
-                0x00000108                main
+                0x00000114      0x1da main.o
+                0x00000114                main
  .text.spi_tranceive_byte
-                0x00000246        0xc lib/spi/single/spi_single.o
-                0x00000246                spi_tranceive_byte
+                0x000002ee        0xc lib/spi/single/spi_single.o
+                0x000002ee                spi_tranceive_byte
  .text.spi_init
-                0x00000252       0x44 lib/spi/single/spi_single.o
-                0x00000252                spi_init
- .text.spi_reset
-                0x00000296       0x28 lib/spi/single/spi_single.o
-                0x00000296                spi_reset
+                0x000002fa       0x46 lib/spi/single/spi_single.o
+                0x000002fa                spi_init
  .text.spi_tranceive
-                0x000002be       0x14 lib/spi/single/spi_single.o
-                0x000002be                spi_tranceive
+                0x00000340       0x14 lib/spi/single/spi_single.o
+                0x00000340                spi_tranceive
  .text.__vector_15
-                0x000002d2       0x4a lib/spi/single/spi_single.o
-                0x000002d2                __vector_15
+                0x00000354       0x4a lib/spi/single/spi_single.o
+                0x00000354                __vector_15
  .text._spi_tranceive
-                0x0000031c       0xdc lib/spi/spi.o
-                0x0000031c                _spi_tranceive
+                0x0000039e       0xc6 lib/spi/spi.o
+                0x0000039e                _spi_tranceive
  .text._spi_isr
-                0x000003f8       0x2a lib/spi/spi.o
-                0x000003f8                _spi_isr
+                0x00000464       0x2a lib/spi/spi.o
+                0x00000464                _spi_isr
  .text.spi_write.constprop.0
-                0x00000422       0x54 lib/max7221/max7221.o
+                0x0000048e       0x44 lib/max7221/max7221.o
  .text.max7221_init
-                0x00000476       0x58 lib/max7221/max7221.o
-                0x00000476                max7221_init
+                0x000004d2       0x7c lib/max7221/max7221.o
+                0x000004d2                max7221_init
  .text.max7221_write
-                0x000004ce       0x3a lib/max7221/max7221.o
-                0x000004ce                max7221_write
+                0x0000054e       0x3a lib/max7221/max7221.o
+                0x0000054e                max7221_write
  .text.max7221_display
-                0x00000508       0x7c lib/max7221/max7221.o
-                0x00000508                max7221_display
+                0x00000588       0x7c lib/max7221/max7221.o
+                0x00000588                max7221_display
  .text.calculate_crc
-                0x00000584       0x94 lib/protos/protos.o
+                0x00000604       0x94 lib/protos/protos.o
  .text.completed
-                0x00000618       0xfe lib/protos/protos.o
+                0x00000698      0x164 lib/protos/protos.o
  .text.proto_init
-                0x00000716        0xe lib/protos/protos.o
-                0x00000716                proto_init
+                0x000007fc        0xe lib/protos/protos.o
+                0x000007fc                proto_init
  .text.proto_status
-                0x00000724        0x8 lib/protos/protos.o
-                0x00000724                proto_status
+                0x0000080a        0x8 lib/protos/protos.o
+                0x0000080a                proto_status
  .text.proto_create
-                0x0000072c       0xa6 lib/protos/protos.o
-                0x0000072c                proto_create
- .text.proto_create_empty
-                0x000007d2       0x58 lib/protos/protos.o
-                0x000007d2                proto_create_empty
+                0x00000812       0x5a lib/protos/protos.o
+                0x00000812                proto_create
+ .text.proto_update_crc
+                0x0000086c       0x12 lib/protos/protos.o
+                0x0000086c                proto_update_crc
  .text.proto_tranceive
-                0x0000082a       0x3c lib/protos/protos.o
-                0x0000082a                proto_tranceive
+                0x0000087e       0x7c lib/protos/protos.o
+                0x0000087e                proto_tranceive
  .text.libgcc.div
-                0x00000866       0x26 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_divmodhi4.o)
-                0x00000866                _div
-                0x00000866                __divmodhi4
+                0x000008fa       0x26 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_divmodhi4.o)
+                0x000008fa                _div
+                0x000008fa                __divmodhi4
  .text.libgcc.div
-                0x0000088c       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_udivmodhi4.o)
-                0x0000088c                __udivmodhi4
-                0x000008b4                . = ALIGN (0x2)
+                0x00000920       0x28 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_udivmodhi4.o)
+                0x00000920                __udivmodhi4
+                0x00000948                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000008b4        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_exit.o)
-                0x000008b4                _exit
-                0x000008b4                exit
+ .fini9         0x00000948        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_exit.o)
+                0x00000948                _exit
+                0x00000948                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -432,11 +431,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000008b4        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_exit.o)
+ .fini0         0x00000948        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr25\libgcc.a(_exit.o)
  *(.fini0)
-                0x000008b8                _etext = .
+                0x0000094c                _etext = .
 
-.data           0x00800100       0x24 load address 0x000008b8
+.data           0x00800100       0x24 load address 0x0000094c
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -445,7 +444,7 @@ END GROUP
                 0x00800100                spi_state
  *(.rodata)
  *(.rodata*)
- .rodata.table.1640
+ .rodata.table.1644
                 0x00800113       0x10 lib/max7221/max7221.o
  *(.gnu.linkonce.d*)
                 0x00800124                . = ALIGN (0x2)
@@ -453,22 +452,32 @@ END GROUP
                 0x00800124                _edata = .
                 0x00800124                PROVIDE (__data_end, .)
 
-.bss            0x00800124        0xb
+.bss            0x00800124       0x1a
                 0x00800124                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
+ .bss.tmp_state.1927
+                0x00800124        0x3 main.o
+ .bss.tmp_display.1929
+                0x00800127        0x4 main.o
+ .bss.state.1926
+                0x0080012b        0x3 main.o
+ .bss.display.1928
+                0x0080012e        0x4 main.o
+ .bss.status.1930
+                0x00800132        0x1 main.o
  *(COMMON)
- COMMON         0x00800124        0xb lib/protos/protos.o
-                0x00800124                state
-                0x0080012f                PROVIDE (__bss_end, .)
-                0x000008b8                __data_load_start = LOADADDR (.data)
-                0x000008dc                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x00800133        0xb lib/protos/protos.o
+                0x00800133                state
+                0x0080013e                PROVIDE (__bss_end, .)
+                0x0000094c                __data_load_start = LOADADDR (.data)
+                0x00000970                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080012f        0x0
+.noinit         0x0080013e        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080012f                _end = .
+                0x0080013e                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -556,65 +565,65 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1c62
+.debug_info     0x00000000     0x1bf0
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x3c5 display.o
- .debug_info    0x000003c5      0x6fa main.o
- .debug_info    0x00000abf      0x468 lib/spi/single/spi_single.o
- .debug_info    0x00000f27      0x29b lib/spi/spi.o
- .debug_info    0x000011c2      0x4c4 lib/max7221/max7221.o
- .debug_info    0x00001686      0x5dc lib/protos/protos.o
+ .debug_info    0x000003c5      0x781 main.o
+ .debug_info    0x00000b46      0x468 lib/spi/single/spi_single.o
+ .debug_info    0x00000fae      0x259 lib/spi/spi.o
+ .debug_info    0x00001207      0x448 lib/max7221/max7221.o
+ .debug_info    0x0000164f      0x5a1 lib/protos/protos.o
 
-.debug_abbrev   0x00000000      0xb4f
+.debug_abbrev   0x00000000      0xba4
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x194 display.o
- .debug_abbrev  0x00000194      0x205 main.o
- .debug_abbrev  0x00000399      0x21c lib/spi/single/spi_single.o
- .debug_abbrev  0x000005b5      0x13a lib/spi/spi.o
- .debug_abbrev  0x000006ef      0x1a7 lib/max7221/max7221.o
- .debug_abbrev  0x00000896      0x2b9 lib/protos/protos.o
+ .debug_abbrev  0x00000194      0x244 main.o
+ .debug_abbrev  0x000003d8      0x21c lib/spi/single/spi_single.o
+ .debug_abbrev  0x000005f4      0x13a lib/spi/spi.o
+ .debug_abbrev  0x0000072e      0x1bb lib/max7221/max7221.o
+ .debug_abbrev  0x000008e9      0x2bb lib/protos/protos.o
 
-.debug_line     0x00000000      0xdab
+.debug_line     0x00000000      0xe66
  *(.debug_line .debug_line.* .debug_line_end)
- .debug_line    0x00000000      0x15b display.o
- .debug_line    0x0000015b      0x2c9 main.o
- .debug_line    0x00000424      0x265 lib/spi/single/spi_single.o
- .debug_line    0x00000689      0x1a1 lib/spi/spi.o
- .debug_line    0x0000082a      0x27a lib/max7221/max7221.o
- .debug_line    0x00000aa4      0x307 lib/protos/protos.o
+ .debug_line    0x00000000      0x161 display.o
+ .debug_line    0x00000161      0x312 main.o
+ .debug_line    0x00000473      0x26c lib/spi/single/spi_single.o
+ .debug_line    0x000006df      0x1ab lib/spi/spi.o
+ .debug_line    0x0000088a      0x22d lib/max7221/max7221.o
+ .debug_line    0x00000ab7      0x3af lib/protos/protos.o
 
-.debug_frame    0x00000000      0x324
+.debug_frame    0x00000000      0x308
  *(.debug_frame)
  .debug_frame   0x00000000       0x4c display.o
  .debug_frame   0x0000004c       0x34 main.o
  .debug_frame   0x00000080       0xdc lib/spi/single/spi_single.o
- .debug_frame   0x0000015c       0x74 lib/spi/spi.o
- .debug_frame   0x000001d0       0x84 lib/max7221/max7221.o
- .debug_frame   0x00000254       0xd0 lib/protos/protos.o
+ .debug_frame   0x0000015c       0x54 lib/spi/spi.o
+ .debug_frame   0x000001b0       0x8c lib/max7221/max7221.o
+ .debug_frame   0x0000023c       0xcc lib/protos/protos.o
 
-.debug_str      0x00000000      0x5cd
+.debug_str      0x00000000      0x5a1
  *(.debug_str)
  .debug_str     0x00000000      0x250 display.o
                                 0x2a6 (size before relaxing)
- .debug_str     0x00000250      0x1af main.o
-                                0x422 (size before relaxing)
- .debug_str     0x000003ff       0x9b lib/spi/single/spi_single.o
+ .debug_str     0x00000250      0x1c4 main.o
+                                0x437 (size before relaxing)
+ .debug_str     0x00000414       0xa5 lib/spi/single/spi_single.o
                                 0x2ca (size before relaxing)
- .debug_str     0x0000049a       0x20 lib/spi/spi.o
+ .debug_str     0x000004b9       0x20 lib/spi/spi.o
                                 0x247 (size before relaxing)
- .debug_str     0x000004ba       0x9c lib/max7221/max7221.o
-                                0x23d (size before relaxing)
- .debug_str     0x00000556       0x77 lib/protos/protos.o
-                                0x2ff (size before relaxing)
+ .debug_str     0x000004d9       0x51 lib/max7221/max7221.o
+                                0x1f2 (size before relaxing)
+ .debug_str     0x0000052a       0x77 lib/protos/protos.o
+                                0x2f4 (size before relaxing)
 
-.debug_loc      0x00000000      0xf82
+.debug_loc      0x00000000      0xe7a
  *(.debug_loc)
- .debug_loc     0x00000000      0x16f display.o
- .debug_loc     0x0000016f       0x47 main.o
- .debug_loc     0x000001b6      0x25f lib/spi/single/spi_single.o
- .debug_loc     0x00000415      0x255 lib/spi/spi.o
- .debug_loc     0x0000066a      0x453 lib/max7221/max7221.o
- .debug_loc     0x00000abd      0x4c5 lib/protos/protos.o
+ .debug_loc     0x00000000      0x151 display.o
+ .debug_loc     0x00000151       0xbd main.o
+ .debug_loc     0x0000020e      0x25f lib/spi/single/spi_single.o
+ .debug_loc     0x0000046d      0x199 lib/spi/spi.o
+ .debug_loc     0x00000606      0x34e lib/max7221/max7221.o
+ .debug_loc     0x00000954      0x526 lib/protos/protos.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -634,14 +643,14 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x160
+.debug_ranges   0x00000000      0x190
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x28 display.o
- .debug_ranges  0x00000028       0x48 main.o
- .debug_ranges  0x00000070       0x48 lib/spi/single/spi_single.o
- .debug_ranges  0x000000b8       0x30 lib/spi/spi.o
- .debug_ranges  0x000000e8       0x28 lib/max7221/max7221.o
- .debug_ranges  0x00000110       0x50 lib/protos/protos.o
+ .debug_ranges  0x00000028       0x60 main.o
+ .debug_ranges  0x00000088       0x48 lib/spi/single/spi_single.o
+ .debug_ranges  0x000000d0       0x30 lib/spi/spi.o
+ .debug_ranges  0x00000100       0x40 lib/max7221/max7221.o
+ .debug_ranges  0x00000140       0x50 lib/protos/protos.o
 
 .debug_macro
  *(.debug_macro)

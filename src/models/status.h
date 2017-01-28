@@ -12,10 +12,10 @@ typedef struct sreg_t
 
 typedef struct memory_t
 {
-    uint8_t enable  : 1;
-    uint8_t mmio    : 1;
-    uint8_t write   : 1;
     uint8_t read    : 1;
+    uint8_t write   : 1;
+    uint8_t mmio    : 1;
+    uint8_t enable  : 1;
 } memory_t;
 
 typedef enum clock_mode_t

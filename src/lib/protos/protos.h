@@ -9,7 +9,7 @@
 #define PROTO_PENDING   -2
 #define PROTO_PARTIAL   -3
 #define PROTO_INV_CRC   -4
-
+#define PROTO_INV_ARG   -5
 
 typedef struct proto_packet_t
 {
@@ -28,8 +28,7 @@ typedef enum proto_status_t
     FAILED,
     HEADER,
     PAYLOAD,
-    FOOTER,
-    CHECKSUM
+    FOOTER
 
 } proto_status_t;
 
@@ -40,6 +39,16 @@ void proto_init(tranceive_t tranceive, completed_t* on_completed);
 void proto_reset(void);
 int8_t proto_completed();
 proto_status_t proto_status();
-proto_packet_t proto_create(uint8_t id, const uint8_t* payload, uint8_t len);
-proto_packet_t proto_create_empty(const uint8_t* payload, uint8_t len);
+proto_packet_t proto_create(uint8_t id, uint8_t* payload, uint8_t len);
 int8_t proto_tranceive(const proto_packet_t* transmit, proto_packet_t* receive);
+void proto_update_crc(proto_packet_t* packet);
+
+static inline int8_t proto_receive(proto_packet_t* receive)
+{
+    return proto_tranceive(0, receive);
+}
+
+static inline int8_t proto_transmit(const proto_packet_t* transmit)
+{
+    return proto_tranceive(transmit, 0);
+}
