@@ -98,7 +98,10 @@ int main(void)
 
             // received valid packet to display
             if (updated)
+            {
                 display_update(&display);
+                updated = 0;
+            }
 
             // do the user processing of the interface
             state.clock.clock_speed = read_adc(POT_ADC);

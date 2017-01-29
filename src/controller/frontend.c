@@ -30,6 +30,9 @@ void front_register_set(register_display_t* reg)
 
 static uint8_t update_register()
 {
+    if (!reg_displaying)
+        return FAILED;
+
     static register_display_t tmp_reg;
 
     // Assert the CS to speak to the right board
@@ -100,7 +103,7 @@ static uint8_t update_instruction(void)
 
 // ------ STATUS BOARD ------
 static status_state_t status_state;
-static status_display_t status_display;
+static status_display_t* status_display;
 
 status_state_t* front_status_get()
 {
@@ -109,7 +112,7 @@ status_state_t* front_status_get()
 
 void front_status_set(status_display_t* display)
 {
-    status_display = *display;
+    status_display = display;
 }
 
 static uint8_t update_status(void)
@@ -174,7 +177,7 @@ void frontend_init(void)
 void frontend_update(void)
 {
     //update_register(status_state.selected);
-    update_instruction();
-    //update_status();
+    //update_instruction();
+    update_status();
 }
 // ------ END PUBLIC ------

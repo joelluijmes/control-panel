@@ -20,9 +20,10 @@ typedef struct memory_t
 
 typedef enum clock_mode_t
 {
-    SLOW,
-    MANUAL,
-    FAST
+    CLK_SLOW,
+    CLK_MANUAL,
+    CLK_FAST,
+    CLK_HALT
 } clock_mode_t;
 
 typedef struct clock_t
