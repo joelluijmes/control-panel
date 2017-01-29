@@ -65,7 +65,7 @@ int main(void)
             instruction = tmp_instruction;
 
         // create the packet
-        proto_packet_t receive = proto_create(2, (uint8_t*)&tmp_instruction, sizeof(instruction_t));
+        proto_packet_t receive = proto_create(20, (uint8_t*)&tmp_instruction, sizeof(instruction_t));
         // start the receivement of the packet
         proto_receive(&receive);
     }

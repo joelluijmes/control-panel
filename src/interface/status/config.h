@@ -57,5 +57,11 @@
 #define ROT8_MASK   (1 << 6)
 
 #define LED_CLK_DDR     DDRA
+#define LED_CLK_PIN     PINA
 #define LED_CLK_PORT    PORTA
 #define LED_CLK_MASK    (1 << 3)
+
+#define BTN_CLK_DDR     DDRC
+#define BTN_CLK_PIN     PINC
+#define BTN_CLK_PORT    PORTC
+#define BTN_CLK_MASK    (1 << 1)

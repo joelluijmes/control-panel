@@ -17,10 +17,11 @@
 
 // ------ REGISTER BOARD ------
 static register_display_t* reg_displaying;
+static register_display_t reg_receiving;
 
-register_display_t* front_register_get()
+register_display_t front_register_get()
 {
-    return reg_displaying;
+    return reg_receiving;
 }
 
 void front_register_set(register_display_t* reg)
@@ -53,7 +54,7 @@ static uint8_t update_register()
     // get the status of the tranceivement (IDLE -> success; FAILED -> incorrect CRC)
     proto_status_t status = proto_status();
     if (status == IDLE)
-        *reg_displaying = tmp_reg;
+        reg_receiving = tmp_reg;
 
     // debug
     if (status == FAILED)
@@ -84,7 +85,7 @@ static uint8_t update_instruction(void)
     ASSERT_FRONT2();
 
     // create the packets to tranceive
-    proto_packet_t transmit = proto_create(2, (uint8_t*)instruction, sizeof(instruction_t));
+    proto_packet_t transmit = proto_create(20, (uint8_t*)instruction, sizeof(instruction_t));
     proto_update_crc(&transmit);
 
     // do the tranceive (blocking)
@@ -176,7 +177,7 @@ void frontend_init(void)
 
 void frontend_update(void)
 {
-    //update_register(status_state.selected);
+    update_register();
     //update_instruction();
     update_status();
 }

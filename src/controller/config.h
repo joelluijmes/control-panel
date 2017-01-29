@@ -52,7 +52,6 @@
 #define FRONT_SS2_MASK	(1 << 2)
 // End SPI Devices
 
-
 #define MCP23_SS12_PORT	PORTB
 #define MCP23_SS12_DDR	DDRB
 #define MCP23_SS12_MASK	(1 << 0 | 1 << 2)
@@ -60,3 +59,12 @@
 #define MCP23_SS3_PORT	PORTC
 #define MCP23_SS3_DDR	DDRC
 #define MCP23_SS3_MASK	(1 << 4 | 1 << 2)
+
+#define CLK_DDR	        DDRB
+#define CLK_PORT	    PORTB
+#define CLK_MASK	    (1 << 1)
+
+#define BREAK_DDR	    DDRD
+#define BREAK_PORT	    PORTD
+#define BREAK_MASK	    (1 << 2)
+

@@ -65,7 +65,7 @@ int main(void)
     sei();
     
     // placeholders
-    static register_display_t display, tmp_display;
+    static register_display_t display, tran_display, recv_display;
     static uint16_t value;
     static proto_status_t status;
 
@@ -76,34 +76,40 @@ int main(void)
 
         // while the transmission hasn't completed, process user interaction
         while (status != IDLE && status != FAILED)
+        {
+            // do the user inteface processing
+            // Switches are disabled because backend is unable to process it at this point.
+            display.value = value; // read_mux(value);
+            display.updated = updated;
+            display_update(display.value);
+
             status = proto_status();
+        }
 
         // debug
         if (status == FAILED)
             __asm("nop");
 
+        tran_display = display;
+
         // update the display on successful transmission :)
         if (status == IDLE)
         {
-            __asm("nop");
-            if (tmp_display.updated)
-                value = tmp_display.value;
-
-            // do the user inteface processing
-            display.value = read_mux(value);
-            display.updated = updated;
-            display_update(display.value);
+            if (recv_display.updated)
+            {
+                display = recv_display;
+                display.updated = 0;
+                value = display.value;
+            }
 
             updated = 0;
         }
 
-        tmp_display = display;
-
         // create the packets
-        proto_packet_t transmit = proto_create(1, (uint8_t*)&display, sizeof(register_display_t));
+        proto_packet_t transmit = proto_create(1, (uint8_t*)&tran_display, sizeof(register_display_t));
         proto_update_crc(&transmit);
 
-        proto_packet_t receive = proto_create(10, (uint8_t*)&tmp_display, sizeof(register_display_t));
+        proto_packet_t receive = proto_create(10, (uint8_t*)&recv_display, sizeof(register_display_t));
         // set the packets to be tranceived
         proto_tranceive(&transmit, &receive);
     }

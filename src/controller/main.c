@@ -36,31 +36,71 @@ static void process_clock(void)
 
     static clock_mode_t prev_mode = CLK_HALT;
     static int16_t prev_adc = 0;
+    static uint8_t prev_step = 0;
 
     // update the clock frequency only if the difference is above the threshold or changed mode
     if (prev_mode == state->clock.clock_mode && abs(state->clock.clock_speed - prev_adc) < ADC_THRES)
         return;
 
-    // first map the ADC value to the range, update the timer registers and calculate the frequency to show
+    // for auto, first map the ADC value to the range, update the timer registers and calculate the frequency to show
+    // manual, disable the output register (it blocks us from writing it as normal IO) then set it high
     uint8_t scaler = TC_DISABLED_PRE;
     if (state->clock.clock_mode == CLK_SLOW)
     {
+        TCCR1A |= 1 << COM1A0;
         OCR1A = map(state->clock.clock_speed, ADC_MIN, ADC_MAX, CLK_SLOW_MIN, 65535.0);
         scaler = (1 << CS12 | 1 << CS10);   // 1024
         display.clock.clock_speed = F_CPU/(2*1024*(1+OCR1A));
     }
     else if (state->clock.clock_mode == CLK_FAST)
     {
+        TCCR1A |= 1 << COM1A0;
         OCR1A = map(state->clock.clock_speed, ADC_MIN, ADC_MAX, CLK_FAST_MIN, 65535.0);
         scaler = (1 << CS11);               // 8
         display.clock.clock_speed = F_CPU/(2*8*(1+OCR1A));
     }
-        
-   // TCNT1 = OCR1A/2;
+    else if (state->clock.clock_mode == CLK_MANUAL)
+    {
+        TCCR1A &= ~(1 << COM1A0);
+        if (state->step && prev_step == 0)
+            CLK_PORT |= CLK_MASK;
+    }
+    
+    // TCNT1 = OCR1A/2;
     TCCR1B = (TCCR1B & 0xF8) | scaler;
 
     prev_mode = state->clock.clock_mode;
     prev_adc = state->clock.clock_speed;
+    prev_step = state->step;
+}
+
+static register_display_t registers[8] =
+{
+    { .value = 0x100 },
+    { .value = 0x200 },
+    { .value = 0x300 },
+    { .value = 0x400 },
+    { .value = 0x500 },
+    { .value = 0x600 },
+    { .value = 0x700 },
+};
+
+static void process_register(void)
+{
+    // TODO: handle on updated registers
+    
+    // if on the status PCB, we selected a different register to display
+    static uint8_t prev_selected = -1;
+    status_state_t* state = front_status_get();
+    if (prev_selected == state->selected || state->selected > 7)
+    return;
+
+    // set it to display on the register board
+    register_display_t* reg = &registers[state->selected];
+    reg->updated = 1;
+    front_register_set(reg);
+
+    prev_selected = state->selected;
 }
 
 void process(void)
@@ -79,6 +119,7 @@ void process(void)
     instruction.alu.clr = !!(backplane.alu == ALU_CLEAR);
 
     process_clock();
+    process_register();
 
     frontend_update();
 }
@@ -86,15 +127,15 @@ void process(void)
 int main(void)
 {
     // enable break line
-    DDRD |= 1 << 2;
-    PORTD = 1 << 2;
+    BREAK_DDR |= BREAK_MASK;
+    BREAK_PORT |= BREAK_MASK;
 
-    DDRB |= 1 << 1;             // enable output of OC1A
-    TCCR1A = 1 << COM1A0;       // Toggle OC1A
-    TCCR1B = 1 << WGM12;     // 64 divider
-    
+    // set the DDR of OC1A as output, toggle the output pin, and use CTC mode
+    CLK_DDR |= CLK_MASK;
+    TCCR1B = 1 << WGM12;
+
     backplane_init();
-    frontend_init();  
+    frontend_init();
 
     front_instruction_set(&instruction);
     front_status_set(&display);
@@ -102,6 +143,12 @@ int main(void)
     while (1)
     {
         process();
-        _delay_ms(50);
+        _delay_ms(10);
+
+        // be sure to set the clock low if needed
+        if (front_status_get()->clock.clock_mode == CLK_MANUAL)
+            CLK_PORT &= ~CLK_MASK;
+
+        _delay_ms(5);
     }
 }

@@ -58,6 +58,8 @@ int main(void)
     MCUSR &= ~(1 << WDRF);
     WDTCSR |= (1 << WDCE) | (1 << WDE);
     WDTCSR = 0x00;
+
+    LED_CLK_DDR |= LED_CLK_MASK;
     
     // wdt_enable(WDTO_30MS);
 
@@ -90,6 +92,7 @@ int main(void)
     while (1)
     {
         status = proto_status();
+        state.step = 0;
 
         // while the transmission hasn't completed, process user interaction
         while (status != IDLE && status != FAILED)
@@ -107,7 +110,9 @@ int main(void)
             state.clock.clock_speed = read_adc(POT_ADC);
             state.clock.clock_mode = read_switch();
             state.selected = read_rot();
-
+            if (BTN_CLK_PIN & BTN_CLK_MASK)
+                state.step = 1;
+                
             status = proto_status();
         }
         
@@ -123,6 +128,7 @@ int main(void)
         }
 
         tmp_state = state;
+        
 
         // create the packets
         proto_packet_t transmit = proto_create(3, (uint8_t*)&tmp_state, sizeof(status_state_t));
@@ -131,5 +137,7 @@ int main(void)
         proto_packet_t receive = proto_create(30, (uint8_t*)&tmp_display, sizeof(status_display_t));
         // set the packets to be tranceived
         proto_tranceive(&transmit, &receive);
+
+        LED_CLK_PIN = LED_CLK_MASK;
     }
 }
