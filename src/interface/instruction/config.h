@@ -49,3 +49,5 @@
 #define SS_PIN		PINB
 #define SS_PORT		PORTB
 #define SS_MASK     (1 << 2)
+
+#define SWITCH_ADC 3

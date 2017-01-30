@@ -178,7 +178,7 @@ void frontend_init(void)
 void frontend_update(void)
 {
     update_register();
-    //update_instruction();
+    update_instruction();
     update_status();
 }
 // ------ END PUBLIC ------

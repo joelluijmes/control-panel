@@ -19,9 +19,29 @@ typedef struct alu_t
     uint16_t carry : 1;
 } alu_t;
 
+typedef enum decoder_t
+{
+    REG_R0,
+    REG_R1,
+    REG_R2,
+    REG_R3,
+    REG_R4,
+    REG_R5,
+    REG_R6,
+    REG_R7,
+    REG_PC,
+    REG_MDR,
+    REG_MAR,
+    REG_STATUS_REG,
+    REG_Y,
+    REG_Z,
+    REG_X,
+    REG_DISABLED
+} decoder_t;
+
 typedef struct operand_t
 {
-    hpu_decoder_t register_op : 4;
+    decoder_t register_op : 4;
     uint8_t stack_pointer : 1;
     uint16_t immediate : 12;
 } operand_t;

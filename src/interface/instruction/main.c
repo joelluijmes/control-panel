@@ -17,11 +17,11 @@ int main(void)
     MCUSR &= ~(1 << WDRF);
     WDTCSR |= (1 << WDCE) | (1 << WDE);
     WDTCSR = 0x00;
-
+    
     //wdt_enable(WDTO_30MS);
 
     // initialize the ADC with prescaler of 16x (ADC clock must < 1MHz)
-    ADMUX = 1 << REFS0;
+    ADMUX = 1 << REFS0 | SWITCH_ADC;
     ADCSRA = 1 << ADEN | 1 << ADPS2;
 
     // initialize single LED driver (just a fancy shift register)
@@ -40,7 +40,7 @@ int main(void)
     // placeholder
     static instruction_t tmp_instruction, instruction;
     static proto_status_t status;
-    
+        
     while (1) 
     {
         // reset the watchdog

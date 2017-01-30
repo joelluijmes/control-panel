@@ -74,8 +74,9 @@ static void process_clock(void)
     prev_step = state->step;
 }
 
-static register_display_t registers[8] =
+static register_display_t registers[] =
 {
+    { .value = 0x000 },
     { .value = 0x100 },
     { .value = 0x200 },
     { .value = 0x300 },
@@ -83,17 +84,27 @@ static register_display_t registers[8] =
     { .value = 0x500 },
     { .value = 0x600 },
     { .value = 0x700 },
+    { .value = 0x011 },
+    { .value = 0x111 },
+    { .value = 0x211 },
+    { .value = 0x311 },
+    { .value = 0x411 },
+    { .value = 0x511 },
+    { .value = 0x611 },
+    { .value = 0x711 }
 };
 
 static void process_register(void)
 {
     // TODO: handle on updated registers
     
+    registers[backplane.target_decoder].value = backplane.c_bus;
+
     // if on the status PCB, we selected a different register to display
     static uint8_t prev_selected = -1;
     status_state_t* state = front_status_get();
-    if (prev_selected == state->selected || state->selected > 7)
-    return;
+    if (prev_selected == state->selected)
+        return;
 
     // set it to display on the register board
     register_display_t* reg = &registers[state->selected];
@@ -101,6 +112,22 @@ static void process_register(void)
     front_register_set(reg);
 
     prev_selected = state->selected;
+}
+
+static void process_instruction(void)
+{
+    // TODO incorperate the stackpointer
+    
+    instruction_t* instruction = front_instruction_get();
+
+    instruction->operand_a.register_op = (decoder_t)backplane.left_decoder;
+    if (backplane.right_decoder <= REGB_R7)
+        instruction->operand_b.register_op = (decoder_t)backplane.right_decoder;
+    else if (backplane.right_decoder == REGB_EXT_IMM || backplane.right_decoder == REGB_INT_IMM)
+        instruction->operand_b.register_op = REG_DISABLED;
+
+    instruction->operand_c.register_op = (decoder_t)backplane.target_decoder;
+    __asm("nop");
 }
 
 void process(void)
@@ -112,7 +139,7 @@ void process(void)
     display.memory.write = backplane.memory.write;
 
     instruction.alu.add = !!(backplane.alu == ALU_ADD);
-    instruction.alu.sub = !!(backplane.alu == ALU_SUB);
+    instruction.alu.sub = !!(backplane.alu == ALU_SUB || backplane.alu == ALU_REV_SUB);
     instruction.alu.and = !!(backplane.alu == ALU_AND);
     instruction.alu.or = !!(backplane.alu == ALU_OR);
     instruction.alu.xor = !!(backplane.alu == ALU_XOR);
@@ -120,6 +147,7 @@ void process(void)
 
     process_clock();
     process_register();
+    process_instruction();
 
     frontend_update();
 }
@@ -149,6 +177,6 @@ int main(void)
         if (front_status_get()->clock.clock_mode == CLK_MANUAL)
             CLK_PORT &= ~CLK_MASK;
 
-        _delay_ms(5);
+        _delay_ms(50);
     }
 }

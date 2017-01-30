@@ -14,9 +14,9 @@
 
 void mux4067_init(void)
 {
-    //Starts AD in Free Running mode with prescaler of 128
-    ADMUX = 1 << REFS0 | MUX4067_ADC_MASK;			// AVCC as reference | ADC0
-    ADCSRA = 1 << ADEN | 1 << ADPS2;            // 16x prescaler (ADC clock must < 1MHz)
+    // enables the ADC with AVcc as reference, set the correct mask, use a 16x prescaler (ADC clock < 1 MHz)
+    ADMUX = 1 << REFS0 | MUX4067_ADC_MASK;		
+    ADCSRA = 1 << ADEN | 1 << ADPS2;            
     
     MUX4067_S1_DDR |= MUX4067_S1_MASK;
     MUX4067_S2_DDR |= MUX4067_S2_MASK;

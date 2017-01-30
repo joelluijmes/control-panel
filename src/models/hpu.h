@@ -2,27 +2,26 @@
 
 #include <inttypes.h>
 
-typedef enum hpu_decoder_t
+typedef enum hpu_left_decoder_t
 {
-    REG_R0,
-    REG_R1,
-    REG_R2,
-    REG_R3,
-    REG_R4,
-    REG_R5,
-    REG_R6,
-    REG_R7,
-    REG_PC,
-    REG_MDR,
-    REG_MAR,
-    REG_STATUS_REG,
-    REG_Y,
-    REG_Z,
-    REG_X,
-    REG_DISABLED
-} hpu_decoder_t;
+    REGA_R0,
+    REGA_R1,
+    REGA_R2,
+    REGA_R3,
+    REGA_R4,
+    REGA_R5,
+    REGA_R6,
+    REGA_R7,
+    REGA_PC,
+    REGA_MDR,
+    REGA_STATUS_REG,
+    REGA_Y,
+    REGA_Z,
+    REGA_X,
+    REGA_DISABLED
+} hpu_left_decoder_t;
 
-typedef enum hpu_b_decoder_t
+typedef enum hpu_right_decoder_t
 {
     REGB_R0,
     REGB_R1,
@@ -35,7 +34,27 @@ typedef enum hpu_b_decoder_t
     REGB_EXT_IMM = 0x0C,
     REGB_INT_IMM = 0x0E,
     REGB_DISABLED = 0x0F
-} hpu_b_decoder_t;
+} hpu_right_decoder_t;
+
+typedef enum hpu_target_decoder_t
+{
+    REGC_R0,
+    REGC_R1,
+    REGC_R2,
+    REGC_R3,
+    REGC_R4,
+    REGC_R5,
+    REGC_R6,
+    REGC_R7,
+    REGC_PC,
+    REGC_MDR,
+    REGC_MAR,
+    REGC_STATUS_REG,
+    REGC_Y,
+    REGC_Z,
+    REGC_X,
+    REGC_DISABLED
+} hpu_target_decoder_t;
 
 typedef enum hpu_condition_t
 {

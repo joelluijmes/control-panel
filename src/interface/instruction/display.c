@@ -16,9 +16,9 @@ static uint8_t read_switch()
     uint16_t val = ADC;
 
     if (val > 750)
-        return OPERAND_A;
-    else if (val < 250)
         return OPERAND_C;
+    else if (val < 250)
+        return OPERAND_A;
     else
         return OPERAND_B;
 }
@@ -71,6 +71,8 @@ static inline void print_condition(condition_t condition)
 
 static inline void print_operand(const operand_t* const operand)
 {
+    uint8_t values[3] = { 0xFF };
+
     switch (operand->register_op)
     {
     case REG_R0:
@@ -81,34 +83,32 @@ static inline void print_operand(const operand_t* const operand)
     case REG_R5:
     case REG_R6:
     case REG_R7:
-        max7221_display(1, MAX7221_DIGIT0, 0xFF);
-        max7221_display(1, MAX7221_DIGIT4, 'R');   // R
-        max7221_display(1, MAX7221_DIGIT6, (uint8_t)operand->register_op);
-        return;
+        values[1] = 'R';
+        values[2] = (uint8_t)operand->register_op;
+        break;
 
     case REG_PC:
-        max7221_display(1, MAX7221_DIGIT0, 0xFF);
-        max7221_display(1, MAX7221_DIGIT4, 'P');
-        max7221_display(1, MAX7221_DIGIT6, 'C');
-        return;
+        values[1] = 'P';
+        values[2] = 'C';
+        break;
 
     case REG_MDR:
-        max7221_display(1, MAX7221_DIGIT0, 'M');
-        max7221_display(1, MAX7221_DIGIT4, 'D');
-        max7221_display(1, MAX7221_DIGIT6, 'R');
-        return;
+        values[0] = 'M';
+        values[1] = 'D';
+        values[2] = 'R';
+        break;
 
     case REG_MAR:
-        max7221_display(1, MAX7221_DIGIT0, 'M');
-        max7221_display(1, MAX7221_DIGIT4, 'A');
-        max7221_display(1, MAX7221_DIGIT6, 'R');
-        return;
+        values[0] = 'M';
+        values[1] = 'A';
+        values[2] = 'R';
+        break;
 
     case REG_STATUS_REG:
-        max7221_display(1, MAX7221_DIGIT0, 'S');
-        max7221_display(1, MAX7221_DIGIT4, 'R');
-        max7221_display(1, MAX7221_DIGIT6, 'G');
-        return;
+        values[0] = 'S';
+        values[1] = 'R';
+        values[2] = 'G';
+        break;
 
     //case X:
         //max7221_display(1, 0, 0xFF);
@@ -117,27 +117,29 @@ static inline void print_operand(const operand_t* const operand)
         //return;
 
     case REG_Y:
-        max7221_display(1, MAX7221_DIGIT0, 0xFF);
-        max7221_display(1, MAX7221_DIGIT4, 0xFF);
-        max7221_display(1, MAX7221_DIGIT6, 'Y');
+        values[2] = 'Y';
         break;
 
     case REG_Z:
-        max7221_display(1, MAX7221_DIGIT0, 0xFF);
-        max7221_display(1, MAX7221_DIGIT4, 0xFF);
-        max7221_display(1, MAX7221_DIGIT6, 'Z');
-        return;
+        values[2] = 'Z';
+        break;
 
     //case STACK_POINTER:
         //max7221_display(1, MAX7221_DIGIT0, 0xFF);
         //max7221_display(1, MAX7221_DIGIT4, 'S');
         //max7221_display(1, MAX7221_DIGIT6, 'P');
         //return;
+
+        default:
+            values[2] = (operand->immediate/0x100)%0x10;
+            values[1] = (operand->immediate/0x10)%0x10;
+            values[0] = operand->immediate%0x10;
+            break;
     }    
 
-    max7221_display(1, MAX7221_DIGIT6, operand->immediate%0x10);
-    max7221_display(1, MAX7221_DIGIT4, (operand->immediate/0x10)%0x10);
-    max7221_display(1, MAX7221_DIGIT0, (operand->immediate/0x100)%0x10);
+    max7221_display(1, MAX7221_DIGIT0, values[0]);
+    max7221_display(1, MAX7221_DIGIT4, values[1]);
+    max7221_display(1, MAX7221_DIGIT6, values[2]);
 }
 
 void display_update(const instruction_t* const instruction)
